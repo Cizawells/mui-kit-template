@@ -1,3 +1,5 @@
+'use client';
+
 import CustomDataGridTable from '@/components/ui-components/custom-data-grid-table';
 
 const PaysListe = () => {

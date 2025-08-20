@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import CustomizationReducer from '../features/customization/customizationSlice';
+
 export const makeStore = () => {
   return configureStore({
-    reducer: {},
+    reducer: {
+      customization: CustomizationReducer,
+    },
   });
 };
 

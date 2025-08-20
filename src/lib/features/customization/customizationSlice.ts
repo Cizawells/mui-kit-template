@@ -1,50 +1,44 @@
-// lib/features/todos/customizationSlice.ts
+// store/slices/customizationSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
+export interface CustomizationState {
+  fontFamily: string;
+  fontSize: number;
+  borderRadius: number;
+  navType: 'light' | 'dark';
+  presetColor: string;
 }
 
-interface TodosState {
-  list: Todo[];
-  isOpen: number[];
-}
-
-const initialState: TodosState = {
-  isOpen: [],
-  list: [],
+const initialState: CustomizationState = {
+  fontFamily: 'Roboto, sans-serif',
+  fontSize: 14,
+  borderRadius: 8,
+  navType: 'light',
+  presetColor: '#1976d2', // default primary color
 };
 
-export const customizationSlice = createSlice({
-  name: 'todos',
+const customizationSlice = createSlice({
+  name: 'customization',
   initialState,
   reducers: {
-    openMenu: (state, action: PayloadAction<string>) => {
-      console.log('stateee', state, action);
+    setFontFamily: (state, action: PayloadAction<string>) => {
+      state.fontFamily = action.payload;
     },
-    addTodo: (state, action: PayloadAction<string>) => {
-      state.list.push({
-        id: Date.now(),
-        text: action.payload,
-        completed: false,
-      });
+    setFontSize: (state, action: PayloadAction<number>) => {
+      state.fontSize = action.payload;
     },
-    toggleTodo: (state, action: PayloadAction<number>) => {
-      const todo = state.list.find((t) => t.id === action.payload);
-      if (todo) {
-        todo.completed = !todo.completed;
-      }
+    setBorderRadius: (state, action: PayloadAction<number>) => {
+      state.borderRadius = action.payload;
     },
-    removeTodo: (state, action: PayloadAction<number>) => {
-      state.list = state.list.filter((t) => t.id !== action.payload);
+    setNavType: (state, action: PayloadAction<'light' | 'dark'>) => {
+      state.navType = action.payload;
+    },
+    setPresetColor: (state, action: PayloadAction<string>) => {
+      state.presetColor = action.payload;
     },
   },
 });
 
-// Export actions for use in components
-export const { addTodo, toggleTodo, removeTodo } = customizationSlice.actions;
+export const { setFontFamily, setFontSize, setBorderRadius, setNavType, setPresetColor } = customizationSlice.actions;
 
-// Export reducer for store
 export default customizationSlice.reducer;
