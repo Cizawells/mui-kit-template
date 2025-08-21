@@ -1,44 +1,26 @@
 'use client';
 
 import * as React from 'react';
-import { CssBaseline } from '@mui/material';
-import { createTheme, ThemeProvider as MuiThemeProvider, Theme } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
+import CssBaseline from '@mui/material/CssBaseline';
+import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
 
-interface ThemeProviderProps {
+import { createTheme } from '@/styles/theme/create-theme';
+
+import EmotionCache from './emotion-cache';
+
+export interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps): React.JSX.Element {
-  // Get theme customization from Redux slice
-  const customization = useSelector((state: any) => state.customization);
-  console.log('custommmmm', customization);
-
-  // Create dynamic MUI theme based on Redux state
-  const theme: Theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: customization.navType, // 'light' | 'dark'
-          primary: { main: customization.presetColor },
-        },
-        typography: {
-          fontFamily: customization.fontFamily,
-          fontSize: customization.fontSize || 14,
-        },
-        shape: {
-          borderRadius: customization.borderRadius,
-        },
-      }),
-    []
-  );
+  const theme = createTheme();
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </MuiThemeProvider>
+    <EmotionCache options={{ key: 'mui' }}>
+      <CssVarsProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </CssVarsProvider>
+    </EmotionCache>
   );
 }
-
-export default ThemeProvider;

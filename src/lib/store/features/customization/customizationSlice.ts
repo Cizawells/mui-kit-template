@@ -7,6 +7,7 @@ export interface CustomizationState {
   borderRadius: number;
   navType: 'light' | 'dark';
   presetColor: string;
+  openMenu: boolean;
 }
 
 const initialState: CustomizationState = {
@@ -15,6 +16,7 @@ const initialState: CustomizationState = {
   borderRadius: 8,
   navType: 'light',
   presetColor: '#1976d2', // default primary color
+  openMenu: true,
 };
 
 const customizationSlice = createSlice({
@@ -36,9 +38,14 @@ const customizationSlice = createSlice({
     setPresetColor: (state, action: PayloadAction<string>) => {
       state.presetColor = action.payload;
     },
+    setOpenMenu: (state, action: PayloadAction<boolean>) => {
+      console.log('dispatchinnnng', action.payload);
+      state.openMenu = action.payload;
+    },
   },
 });
 
-export const { setFontFamily, setFontSize, setBorderRadius, setNavType, setPresetColor } = customizationSlice.actions;
+export const { setFontFamily, setFontSize, setBorderRadius, setNavType, setPresetColor, setOpenMenu } =
+  customizationSlice.actions;
 
 export default customizationSlice.reducer;

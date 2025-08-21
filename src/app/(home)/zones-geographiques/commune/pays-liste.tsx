@@ -14,9 +14,15 @@ const PaysListe = () => {
         ]}
         columns={[
           {
-            field: 'lastName',
-            headerName: 'Last name',
-            width: 150,
+            field: 'code',
+            headerName: 'Code',
+            flex: 1,
+            editable: false,
+          },
+          {
+            field: 'designation',
+            headerName: 'Designation',
+            flex: 1,
             editable: false,
           },
         ]}

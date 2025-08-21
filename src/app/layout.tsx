@@ -6,6 +6,7 @@ import '@/styles/global.css';
 import { UserProvider } from '@/contexts/user-context';
 import { LocalizationProvider } from '@/components/core/localization-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
+import QueryProvider from '@/components/QueryProvider';
 
 import StoreProvider from './StoreProvider';
 
@@ -22,7 +23,9 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
         <StoreProvider>
           <LocalizationProvider>
             <UserProvider>
-              <ThemeProvider>{children}</ThemeProvider>
+              <ThemeProvider>
+                <QueryProvider>{children}</QueryProvider>
+              </ThemeProvider>
             </UserProvider>
           </LocalizationProvider>
         </StoreProvider>

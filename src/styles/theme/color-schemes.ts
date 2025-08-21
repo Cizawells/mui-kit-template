@@ -104,7 +104,8 @@ export const colorSchemes = {
       primary: {
         ...neonBlue,
         light: neonBlue[400],
-        main: neonBlue[500],
+        main: '#08569e',
+        // main: neonBlue[500],
         dark: neonBlue[600],
         contrastText: 'var(--mui-palette-common-white)',
       },

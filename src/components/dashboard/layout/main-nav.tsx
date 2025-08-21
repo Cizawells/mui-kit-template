@@ -1,60 +1,84 @@
 'use client';
 
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Badge from '@mui/material/Badge';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
+import { AppBar, Avatar, Badge, ButtonBase, IconButton, Stack, Toolbar, Tooltip, useTheme } from '@mui/material';
 import { Bell as BellIcon } from '@phosphor-icons/react/dist/ssr/Bell';
-import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
-import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 import { Users as UsersIcon } from '@phosphor-icons/react/dist/ssr/Users';
+import { IconMenu2 } from '@tabler/icons-react';
 
+import { useAppDispatch, useAppSelector } from '@/lib/store/hoooks';
 import { usePopover } from '@/hooks/use-popover';
 
+import { setOpenMenu } from '../../../lib/store/features/customization/customizationSlice';
 import { MobileNav } from './mobile-nav';
 import { UserPopover } from './user-popover';
 
-export function MainNav(): React.JSX.Element {
-  const [openNav, setOpenNav] = React.useState<boolean>(false);
+const drawerWidth = 240; // must match your SideNav width
 
+export function MainNav(): React.JSX.Element {
+  const dispatch = useAppDispatch();
+  const openMenu = useAppSelector((state) => state.customization.openMenu);
+  const [openNav, setOpenNav] = React.useState<boolean>(false);
+  const theme = useTheme();
   const userPopover = usePopover<HTMLDivElement>();
+
+  const handleLeftDrawerToggle = () => {
+    dispatch(setOpenMenu(!openMenu));
+  };
 
   return (
     <React.Fragment>
-      <Box
-        component="header"
+      <AppBar
+        position="fixed"
+        elevation={0}
         sx={{
+          color: 'white',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backgroundColor: '#08569e',
           borderBottom: '1px solid var(--mui-palette-divider)',
-          backgroundColor: 'var(--mui-palette-background-paper)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 'var(--mui-zIndex-appBar)',
+          transition: (theme) =>
+            theme.transitions.create(['margin', 'width'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          ...(openMenu && {
+            marginLeft: `${drawerWidth}px`,
+            width: `calc(100% - ${drawerWidth}px)`,
+            transition: (theme) =>
+              theme.transitions.create(['margin', 'width'], {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+          }),
         }}
       >
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ alignItems: 'center', justifyContent: 'space-between', minHeight: '64px', px: 2 }}
-        >
-          <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
-            <IconButton
-              onClick={(): void => {
-                setOpenNav(true);
-              }}
-              sx={{ display: { lg: 'none' } }}
-            >
-              <ListIcon />
-            </IconButton>
-            <Tooltip title="Search">
-              <IconButton>
-                <MagnifyingGlassIcon />
-              </IconButton>
+        <Toolbar sx={{ minHeight: '64px', justifyContent: 'space-between' }}>
+          {/* Left side */}
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Tooltip title="Menu">
+              <ButtonBase>
+                <Avatar
+                  variant="rounded"
+                  sx={{
+                    transition: 'all .2s ease-in-out',
+                    color: theme.palette.mode === 'dark' ? theme.palette.secondary.main : theme.palette.secondary.dark,
+                    '&:hover': {
+                      background:
+                        theme.palette.mode === 'dark' ? theme.palette.secondary.main : theme.palette.secondary.dark,
+                      color:
+                        theme.palette.mode === 'dark' ? theme.palette.secondary.light : theme.palette.secondary.light,
+                    },
+                  }}
+                  onClick={handleLeftDrawerToggle}
+                >
+                  <IconMenu2 stroke={1.5} size="1.3rem" />
+                </Avatar>
+              </ButtonBase>
             </Tooltip>
           </Stack>
-          <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
+
+          {/* Right side */}
+          <Stack direction="row" spacing={2} alignItems="center">
             <Tooltip title="Contacts">
               <IconButton>
                 <UsersIcon />
@@ -74,9 +98,11 @@ export function MainNav(): React.JSX.Element {
               sx={{ cursor: 'pointer' }}
             />
           </Stack>
-        </Stack>
-      </Box>
+        </Toolbar>
+      </AppBar>
+
       <UserPopover anchorEl={userPopover.anchorRef.current} onClose={userPopover.handleClose} open={userPopover.open} />
+
       <MobileNav
         onClose={() => {
           setOpenNav(false);
