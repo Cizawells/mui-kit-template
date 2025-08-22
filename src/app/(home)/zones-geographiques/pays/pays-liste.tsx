@@ -22,11 +22,11 @@ const PaysListe = () => {
   return (
     <div>
       <CustomDataGridTable
-        actionButtons={useActionButton({
-          theme,
-          handleClickOpenCreateOrEditDialog,
-          handleClickOpenDeleteAlertDialog,
-        })}
+        // actionButtons={useActionButton({
+        //   theme,
+        //   handleClickOpenCreateOrEditDialog,
+        //   handleClickOpenDeleteAlertDialog,
+        // })}
         rows={data?.data.contents}
         columns={[
           {

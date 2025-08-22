@@ -9,10 +9,10 @@ type ActionButtonFn = (params: Pays) => JSX.Element;
 type DataGridDemoProps = {
   rows: any;
   columns: GridColDef<any[number]>[];
-  actionButtons: ActionButtonFn;
+  // actionButtons: ActionButtonFn;
 };
 
-export default function CustomDataGridTable({ rows, columns, actionButtons }: DataGridDemoProps) {
+export default function CustomDataGridTable({ rows, columns }: DataGridDemoProps) {
   const enhancedHeaders = useMemo(
     () =>
       columns.map((header) => ({
@@ -22,26 +22,26 @@ export default function CustomDataGridTable({ rows, columns, actionButtons }: Da
       })),
     [columns]
   );
-  const newHeaders = useMemo(
-    () => [
-      ...enhancedHeaders,
-      {
-        field: 'actions',
-        headerName: 'actions',
-        flex: 0.5,
-        editable: false,
-        renderCell: (params: Pays) => (
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>{actionButtons(params)}</Box>
-        ),
-      },
-    ],
-    [enhancedHeaders, actionButtons]
-  );
+  // const newHeaders = useMemo(
+  //   () => [
+  //     ...enhancedHeaders,
+  //     {
+  //       field: 'actions',
+  //       headerName: 'actions',
+  //       flex: 0.5,
+  //       editable: false,
+  //       renderCell: (params: Pays) => (
+  //         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>{actionButtons(params)}</Box>
+  //       ),
+  //     },
+  //   ],
+  //   [enhancedHeaders, actionButtons]
+  // );
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
-        columns={newHeaders}
+        columns={columns}
         initialState={{
           pagination: {
             paginationModel: {
