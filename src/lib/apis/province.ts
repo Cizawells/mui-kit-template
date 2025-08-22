@@ -1,23 +1,18 @@
-export interface PaysResponse {
+export interface ProvinceResponse {
   data: {
-    contents: {
-      id: string;
-      code: string;
-      designation: string;
-      nationalite: string;
-      continent: string;
-    }[];
+    contents: Province[];
   };
   message: string;
   statusCode: number;
 }
-export type Pays = {
+export type Province = {
   id?: string;
   code: string;
-  libelle: string;
-  nationalite: string;
-  continent: string;
-  exonereMouvementDesVehicules: boolean;
+  designation: string;
+  reference: string;
+  dateDebut: string;
+  dateFin: string;
+  // Pays?: Pays;
 };
 export type Continent = {
   value: string;
@@ -26,26 +21,19 @@ export type Continent = {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL; // <- env variable
 
-export async function fetchPays(): Promise<PaysResponse> {
-  const res = await fetch(`${API_URL}/pays`); // Replace with your API endpoint
-  if (!res.ok) throw new Error('Failed to fetch pays');
-  return res.json();
-}
-export async function fetchContinents(): Promise<{
-  enumerations: Continent[];
-}> {
-  const res = await fetch(`${API_URL}/pays/enumerations/continents`); // Replace with your API endpoint
+export async function fetchProvinces(): Promise<ProvinceResponse> {
+  const res = await fetch(`${API_URL}/provinces`); // Replace with your API endpoint
   if (!res.ok) throw new Error('Failed to fetch pays');
   return res.json();
 }
 
-export async function savePays(pays: Pays): Promise<Pays> {
-  const res = await fetch(`${API_URL}/pays`, {
+export async function saveProvince(province: Province): Promise<Province> {
+  const res = await fetch(`${API_URL}/province`, {
     method: 'POST', // POST request
     headers: {
       'Content-Type': 'application/json', // Tell the server we're sending JSON
     },
-    body: JSON.stringify(pays), // Convert the `pays` object to JSON
+    body: JSON.stringify(province), // Convert the `pays` object to JSON
   });
 
   if (!res.ok) {
@@ -54,7 +42,7 @@ export async function savePays(pays: Pays): Promise<Pays> {
 
   return res.json();
 }
-export async function updatePays(pays: Pays): Promise<Pays> {
+export async function updateProvince(pays: Province): Promise<Province> {
   console.log('payys', pays);
   const res = await fetch(`${API_URL}/pays/${pays.id}`, {
     method: 'PUT', // POST request
@@ -70,7 +58,7 @@ export async function updatePays(pays: Pays): Promise<Pays> {
 
   return res.json();
 }
-export async function deletePays(id: string): Promise<Pays> {
+export async function deletePays(id: string): Promise<Province> {
   console.log('posting');
   const res = await fetch(`${API_URL}/pays/${id}`, {
     method: 'DELETE', // POST request

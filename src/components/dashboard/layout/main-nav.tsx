@@ -52,7 +52,7 @@ export function MainNav(): React.JSX.Element {
           }),
         }}
       >
-        <Toolbar sx={{ minHeight: '64px', justifyContent: 'space-between' }}>
+        <Toolbar sx={{ minHeight: '100px', justifyContent: 'space-between' }}>
           {/* Left side */}
           <Stack direction="row" spacing={2} alignItems="center">
             <Tooltip title="Menu">
@@ -81,13 +81,13 @@ export function MainNav(): React.JSX.Element {
           <Stack direction="row" spacing={2} alignItems="center">
             <Tooltip title="Contacts">
               <IconButton>
-                <UsersIcon />
+                <UsersIcon color="inherit" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Notifications">
               <Badge badgeContent={4} color="success" variant="dot">
                 <IconButton>
-                  <BellIcon />
+                  <BellIcon color="inherit" />
                 </IconButton>
               </Badge>
             </Tooltip>

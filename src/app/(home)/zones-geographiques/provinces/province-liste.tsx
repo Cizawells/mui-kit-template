@@ -4,19 +4,20 @@ import { useState } from 'react';
 import { useTheme } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { deletePays, fetchPays, Pays, PaysResponse } from '@/lib/apis/pays';
+import { deletePays } from '@/lib/apis/pays';
+import { fetchProvinces, Province, ProvinceResponse } from '@/lib/apis/province';
 import CustomDataGridTable from '@/components/ui-components/custom-data-grid-table';
 import { renderActionButtons } from '@/components/ui-components/table-actions'; // <-- updated import
 
 import DeleteDialog from './delete-dialog';
-import { PaysDialog } from './dialog-pays';
+import { ProvinceDialog } from './dialog-province';
 
-const PaysListe = () => {
+const ProvinceListe = () => {
   const deleteMutation = useMutation({
-    mutationFn: () => deletePays(selectedPays!.id!),
+    mutationFn: () => deletePays(selectedProvince!.id!),
     onSuccess: () => {
       console.log('success deleting');
-      setSelectedPays(null);
+      setSelectedProvince(null);
       setOpenDeleteDialog(false);
     },
   });
@@ -24,26 +25,26 @@ const PaysListe = () => {
   const theme = useTheme();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openPaysDialog, setOpenPaysDialog] = useState(false);
-  const [selectedPays, setSelectedPays] = useState<Pays | null>(null);
+  const [selectedProvince, setSelectedProvince] = useState<Province | null>(null);
   const {
-    data: paysListe,
+    data: provinceData,
     isLoading,
     isError,
-  } = useQuery<PaysResponse>({
-    queryKey: ['pays'],
-    queryFn: fetchPays,
+  } = useQuery<ProvinceResponse>({
+    queryKey: ['province'],
+    queryFn: fetchProvinces,
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading countries</div>;
 
-  const handleClickOpenCreateOrEditDialog = (pays: Pays) => {
+  const handleClickOpenCreateOrEditDialog = (province: Province) => {
     setOpenPaysDialog(true);
-    setSelectedPays(pays);
+    setSelectedProvince(province);
   };
 
-  const handleClickOpenDeleteAlertDialog = (pays: Pays) => {
-    setSelectedPays(pays);
+  const handleClickOpenDeleteAlertDialog = (province: Province) => {
+    setSelectedProvince(province);
     setOpenDeleteDialog(true);
   };
 
@@ -58,10 +59,14 @@ const PaysListe = () => {
     deleteMutation.mutate();
   };
 
+  if (!provinceData) {
+    return <div>Failed to load Data</div>;
+  }
+
   return (
     <div>
       <CustomDataGridTable
-        rows={paysListe?.data.contents || []}
+        rows={provinceData.data.contents}
         actionButtons={actionButtons} // <-- pass the function here
         columns={[
           { field: 'code', headerName: 'Code', flex: 1, editable: false },
@@ -71,9 +76,13 @@ const PaysListe = () => {
         ]}
       />
       <DeleteDialog open={openDeleteDialog} setOpen={setOpenDeleteDialog} handleDelete={handleDelete} />
-      <PaysDialog open={openPaysDialog} onClose={() => setOpenPaysDialog(false)} selectedValue={selectedPays!} />
+      <ProvinceDialog
+        open={openPaysDialog}
+        onClose={() => setOpenPaysDialog(false)}
+        selectedValue={selectedProvince!}
+      />
     </div>
   );
 };
 
-export default PaysListe;
+export default ProvinceListe;

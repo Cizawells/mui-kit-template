@@ -2,20 +2,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface CustomizationState {
+  basename: string;
+  defaultPath: string;
   fontFamily: string;
-  fontSize: number;
+  fontSize?: number; // optional since it's missing in initialState
   borderRadius: number;
-  navType: 'light' | 'dark';
+  outlinedFilled: boolean;
+  theme: 'light' | 'dark';
   presetColor: string;
-  openMenu: boolean;
+  i18n: 'en' | 'fr' | 'ro' | 'zh';
+  rtlLayout: boolean;
+  openMenu: boolean; // optional, not in initialState
+  navType: string;
+  isOpen: string[];
 }
 
 const initialState: CustomizationState = {
-  fontFamily: 'Roboto, sans-serif',
-  fontSize: 14,
-  borderRadius: 8,
+  basename: '',
+  defaultPath: '/',
+  // fontFamily: `Helvetica Neue Light`,
+  fontFamily: `'Inter','Roboto', sans-serif`,
+
+  borderRadius: 5,
+  outlinedFilled: false,
+  theme: 'light', // light, dark
+  presetColor: 'theme5', // default, theme1, theme2, theme3, theme4, theme5, theme6
+  i18n: 'en', // 'en' - English, 'fr' - French, 'ro' - Romanian, 'zh' - Chinese
+  rtlLayout: false,
   navType: 'light',
-  presetColor: '#1976d2', // default primary color
+  isOpen: [],
   openMenu: true,
 };
 
@@ -42,10 +57,14 @@ const customizationSlice = createSlice({
       console.log('dispatchinnnng', action.payload);
       state.openMenu = action.payload;
     },
+    setIsOpen: (state, action: PayloadAction<string>) => {
+      console.log('dispatchinnnng', action.payload);
+      state.isOpen = [action.payload];
+    },
   },
 });
 
-export const { setFontFamily, setFontSize, setBorderRadius, setNavType, setPresetColor, setOpenMenu } =
+export const { setFontFamily, setFontSize, setBorderRadius, setNavType, setPresetColor, setOpenMenu, setIsOpen } =
   customizationSlice.actions;
 
 export default customizationSlice.reducer;

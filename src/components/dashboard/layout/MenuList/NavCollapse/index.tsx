@@ -4,20 +4,11 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 // import AuthContext from 'contexts/JWTContext';
 import { useSelector } from 'react-redux';
 
+import { MenuItemType } from '@/lib/types';
+
 import NavItem from '../NavItem';
 
 // ==============================|| NAV COLLAPSE ||============================== //
-
-interface MenuItemType {
-  id: string;
-  type: 'group' | 'collapse' | 'item';
-  title: React.ReactNode;
-  caption?: React.ReactNode;
-  icon?: React.ComponentType<any>;
-  url?: string;
-  roles?: string[];
-  children?: MenuItemType[];
-}
 
 interface NavCollapseProps {
   menu: MenuItemType;
@@ -32,11 +23,6 @@ const NavCollapse: React.FC<NavCollapseProps> = ({ menu, level, openStates, hand
   //   const { roles } = useContext(AuthContext);
 
   const isOpen = openStates[menu.id] || false;
-
-  const hasRole = (userRoles: string[], menu: MenuItemType) => {
-    if (menu.type === 'item' && (!menu.roles || menu.roles.length === 0)) return false;
-    return menu.roles?.some((role) => userRoles.includes(role));
-  };
 
   const menus = menu.children?.map((item) => {
     switch (item.type) {

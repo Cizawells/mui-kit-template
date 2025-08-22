@@ -1,8 +1,10 @@
 'use client';
 
+import { Breadcrumbs } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { useAppSelector } from '@/lib/store/hoooks';
+import { RootState } from '@/lib/store/store';
 
 const drawerWidth = 240;
 
@@ -14,7 +16,7 @@ const StyledMain = styled('main')<{ open: boolean }>(({ open }) => ({
   transition: 'margin 225ms cubic-bezier(0.4, 0, 0.6, 1)',
   width: '100%',
   marginLeft: 0,
-  marginTop: '60px',
+  marginTop: '45px',
   height: 'calc(100vh)',
 
   backgroundColor: '#EEF2F6',
@@ -35,10 +37,12 @@ const StyledMain = styled('main')<{ open: boolean }>(({ open }) => ({
 }));
 
 const Main = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  const openMenu = useAppSelector((state) => state.customization.openMenu);
+  const openMenu = useAppSelector((state: RootState) => state.customization.openMenu);
 
   return (
     <StyledMain open={openMenu} className={className}>
+      <Breadcrumbs />
+
       {children}
     </StyledMain>
   );

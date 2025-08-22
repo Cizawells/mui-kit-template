@@ -1,29 +1,26 @@
-import type { Shadows } from '@mui/material/styles/shadows';
+import { alpha } from '@mui/material/styles';
 
-export const shadows = [
-  'none',
-  '0px 1px 2px rgba(0, 0, 0, 0.08)',
-  '0px 1px 5px rgba(0, 0, 0, 0.08)',
-  '0px 1px 8px rgba(0, 0, 0, 0.08)',
-  '0px 1px 10px rgba(0, 0, 0, 0.08)',
-  '0px 1px 14px rgba(0, 0, 0, 0.08)',
-  '0px 1px 18px rgba(0, 0, 0, 0.08)',
-  '0px 2px 16px rgba(0, 0, 0, 0.08)',
-  '0px 3px 14px rgba(0, 0, 0, 0.08)',
-  '0px 3px 16px rgba(0, 0, 0, 0.08)',
-  '0px 4px 18px rgba(0, 0, 0, 0.08)',
-  '0px 4px 20px rgba(0, 0, 0, 0.08)',
-  '0px 5px 22px rgba(0, 0, 0, 0.08)',
-  '0px 5px 24px rgba(0, 0, 0, 0.08)',
-  '0px 5px 26px rgba(0, 0, 0, 0.08)',
-  '0px 6px 28px rgba(0, 0, 0, 0.08)',
-  '0px 6px 30px rgba(0, 0, 0, 0.08)',
-  '0px 6px 32px rgba(0, 0, 0, 0.08)',
-  '0px 7px 34px rgba(0, 0, 0, 0.08)',
-  '0px 7px 36px rgba(0, 0, 0, 0.08)',
-  '0px 8px 38px rgba(0, 0, 0, 0.08)',
-  '0px 8px 40px rgba(0, 0, 0, 0.08)',
-  '0px 8px 42px rgba(0, 0, 0, 0.08)',
-  '0px 9px 44px rgba(0, 0, 0, 0.08)',
-  '0px 9px 46px rgba(0, 0, 0, 0.08)',
-] satisfies Shadows;
+const createCustomShadow = (theme: any, color: any) => {
+  const transparent = alpha(color, 0.24);
+  return {
+    z1: `0 1px 2px 0 ${transparent}`,
+    z8: `0 8px 16px 0 ${transparent}`,
+    z12: `0 12px 24px 0 ${transparent} 0 10px 20px 0 ${transparent}`,
+    z16: `0 0 3px 0 ${transparent} 0 14px 28px -5px ${transparent}`,
+    z20: `0 0 3px 0 ${transparent} 0 18px 36px -5px ${transparent}`,
+    z24: `0 0 6px 0 ${transparent} 0 21px 44px 0 ${transparent}`,
+
+    primary: `0px 12px 14px 0px ${alpha(theme.colors?.primaryMain, 0.3)}`,
+    secondary: `0px 12px 14px 0px ${alpha(theme.colors?.secondaryMain, 0.3)}`,
+    orange: `0px 12px 14px 0px ${alpha(theme.colors?.orangeMain, 0.3)}`,
+    success: `0px 12px 14px 0px ${alpha(theme.colors?.successMain, 0.3)}`,
+    warning: `0px 12px 14px 0px ${alpha(theme.colors?.warningMain, 0.3)}`,
+    error: `0px 12px 14px 0px ${alpha(theme.colors?.errorMain, 0.3)}`,
+  };
+};
+
+export default function customShadows(navType: any, theme: any) {
+  return navType === 'dark'
+    ? createCustomShadow(theme, theme.colors?.darkLevel1)
+    : createCustomShadow(theme, theme.colors?.grey600);
+}
