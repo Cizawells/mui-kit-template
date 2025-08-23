@@ -1,42 +1,22 @@
 import React, { useState } from 'react';
-import { Divider, List, Theme, Typography, useTheme } from '@mui/material';
+import { Divider, List, type Theme, Typography, useTheme } from '@mui/material';
 
 // import AuthContext from 'contexts/JWTContext';
+
+import { type MenuItemType } from '@/lib/types';
 
 import NavCollapse from '../NavCollapse';
 import NavItem from '../NavItem';
 
 // ==============================|| NAV GROUP ||============================== //
 
-interface MenuItemType {
-  id: string;
-  type: 'group' | 'collapse' | 'item';
-  title: React.ReactNode;
-  caption?: React.ReactNode;
-  icon?: React.ComponentType<any>;
-  url?: string;
-  roles?: string[];
-  children?: MenuItemType[];
-}
+type OpenStates = Record<string, boolean>;
 
-interface NavGroupProps {
-  item: MenuItemType;
-}
-
-interface OpenStates {
-  [key: string]: boolean;
-}
-
-const NavGroup: React.FC<NavGroupProps> = ({ item }) => {
+const NavGroup: React.FC<{ item: MenuItemType }> = ({ item }: { item: MenuItemType }) => {
   const theme: Theme = useTheme();
+  console.log('themeeeeee navgroupp', theme);
   const [openStates, setOpenStates] = useState<OpenStates>({});
   //   const { currentYear, roles } = useContext(AuthContext);
-
-  const hasRole = (userRoles: string[], menu: MenuItemType) => {
-    if (menu.id === 'article') console.log('articleee', menu);
-    if (menu.type === 'item' && (!menu.roles || menu.roles.length === 0)) return false;
-    return menu.roles?.some((role) => userRoles.includes(role));
-  };
 
   const handleClick = (menuId: string) => {
     setOpenStates((prev) => ({
@@ -66,16 +46,22 @@ const NavGroup: React.FC<NavGroupProps> = ({ item }) => {
     <>
       <List
         subheader={
-          item.title && (
-            <Typography variant="caption" sx={{}} display="block" gutterBottom>
+          item.title ? <Typography
+              variant="caption"
+              sx={{ ...(theme.typography as any).menuCaption }}
+              display="block"
+              gutterBottom
+            >
               {item.title}
-              {item.caption && (
-                <Typography variant="caption" sx={{}} display="block" gutterBottom>
+              {item.caption ? <Typography
+                  variant="caption"
+                  sx={{ ...(theme.typography as any).subMenuCaption }}
+                  display="block"
+                  gutterBottom
+                >
                   {item.caption}
-                </Typography>
-              )}
-            </Typography>
-          )
+                </Typography> : null}
+            </Typography> : null
         }
       >
         {items}

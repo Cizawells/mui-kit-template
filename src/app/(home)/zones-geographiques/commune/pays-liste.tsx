@@ -2,7 +2,7 @@
 
 import CustomDataGridTable from '@/components/ui-components/custom-data-grid-table';
 
-const PaysListe = () => {
+function PaysListe() {
   return (
     <div>
       <CustomDataGridTable
@@ -29,6 +29,6 @@ const PaysListe = () => {
       />
     </div>
   );
-};
+}
 
 export default PaysListe;

@@ -1,23 +1,14 @@
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Theme, Typography, useTheme } from '@mui/material';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, type Theme, Typography, useTheme } from '@mui/material';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 // import AuthContext from 'contexts/JWTContext';
 import { useSelector } from 'react-redux';
 
+import { type MenuItemType } from '@/lib/types';
+
 import NavItem from '../NavItem';
 
 // ==============================|| NAV COLLAPSE ||============================== //
-
-interface MenuItemType {
-  id: string;
-  type: 'group' | 'collapse' | 'item';
-  title: React.ReactNode;
-  caption?: React.ReactNode;
-  icon?: React.ComponentType<any>;
-  url?: string;
-  roles?: string[];
-  children?: MenuItemType[];
-}
 
 interface NavCollapseProps {
   menu: MenuItemType;
@@ -32,11 +23,6 @@ const NavCollapse: React.FC<NavCollapseProps> = ({ menu, level, openStates, hand
   //   const { roles } = useContext(AuthContext);
 
   const isOpen = openStates[menu.id] || false;
-
-  const hasRole = (userRoles: string[], menu: MenuItemType) => {
-    if (menu.type === 'item' && (!menu.roles || menu.roles.length === 0)) return false;
-    return menu.roles?.some((role) => userRoles.includes(role));
-  };
 
   const menus = menu.children?.map((item) => {
     switch (item.type) {
@@ -80,7 +66,7 @@ const NavCollapse: React.FC<NavCollapseProps> = ({ menu, level, openStates, hand
           pl: `${level * 24}px`,
         }}
         selected={isOpen}
-        onClick={() => handleClick(menu.id)}
+        onClick={() => { handleClick(menu.id); }}
       >
         <ListItemIcon sx={{ my: 'auto', minWidth: !menu.icon ? 18 : 36 }}>{menuIcon}</ListItemIcon>
         <ListItemText
@@ -95,11 +81,9 @@ const NavCollapse: React.FC<NavCollapseProps> = ({ menu, level, openStates, hand
             </Typography>
           }
           secondary={
-            menu.caption && (
-              <Typography variant="caption" sx={{}} display="block" gutterBottom>
+            menu.caption ? <Typography variant="caption" sx={{}} display="block" gutterBottom>
                 {menu.caption}
-              </Typography>
-            )
+              </Typography> : null
           }
         />
         {isOpen ? (

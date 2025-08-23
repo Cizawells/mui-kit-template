@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { HelpOutlineRounded } from '@mui/icons-material';
-import { TextField, TextFieldProps, Tooltip } from '@mui/material';
+import { TextField, type TextFieldProps, Tooltip } from '@mui/material';
 
 interface InputFieldProps extends Omit<TextFieldProps, 'onChange' | 'name'> {
   label: string;
@@ -52,14 +52,12 @@ const InputField: React.FC<InputFieldProps> = ({
           ...labelStyles,
         }}
       >
-        {label} {required && <span style={{ color: 'red' }}>*</span>}{' '}
-        {hint && (
-          <Tooltip title={hint} placement="top" arrow>
+        {label} {required ? <span style={{ color: 'red' }}>*</span> : null}{' '}
+        {hint ? <Tooltip title={hint} placement="top" arrow>
             <span style={{ cursor: 'pointer' }}>
               <HelpOutlineRounded fontSize="small" sx={{ marginBottom: '-4px' }} />
             </span>
-          </Tooltip>
-        )}
+          </Tooltip> : null}
       </label>
       <TextField
         id={name}

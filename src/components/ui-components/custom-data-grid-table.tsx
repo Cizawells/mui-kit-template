@@ -1,18 +1,20 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, type GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
-import { Pays } from '@/lib/apis/pays';
+import { type Pays } from '@/lib/apis/pays';
 
-type ActionButtonFn = (params: Pays) => JSX.Element;
+type ActionButtonFn = (params: Pays) => React.JSX.Element;
 
-type DataGridDemoProps = {
+interface DataGridDemoProps {
   rows: any;
-  columns: GridColDef<any[number]>[];
-  // actionButtons: ActionButtonFn;
-};
+  columns: GridColDef<Pays>[];
+  actionButtons: ActionButtonFn;
+}
 
-export default function CustomDataGridTable({ rows, columns }: DataGridDemoProps) {
+export default function CustomDataGridTable({ rows, columns, actionButtons }: DataGridDemoProps): React.JSX.Element {
+  const theme = useTheme();
   const enhancedHeaders = useMemo(
     () =>
       columns.map((header) => ({
@@ -29,27 +31,61 @@ export default function CustomDataGridTable({ rows, columns }: DataGridDemoProps
   //       field: 'actions',
   //       headerName: 'actions',
   //       flex: 0.5,
+  //       // headerAlign: 'center',
   //       editable: false,
-  //       renderCell: (params: Pays) => (
-  //         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>{actionButtons(params)}</Box>
+  //       renderCell: (params: GridRenderCellParams<Pays>) => (
+  //         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>{actionButtons(params.row)}</Box>
   //       ),
   //     },
   //   ],
   //   [enhancedHeaders, actionButtons]
   // );
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box
+      sx={{
+        width: '100%',
+        padding: 0,
+        margin: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        '& .MuiDataGrid-columnHeader': {
+          backgroundColor: theme.palette.primary.light,
+          color: '#333 !important',
+          borderRight: '0.1px solid #fff',
+          minHeight: '40px',
+        },
+        '& .MuiDataGrid-columnHeaderTitle': {
+          fontSize: '14px',
+          fontWeight: 'bold !important',
+        },
+        '& .MuiDataGrid-row': {
+          minHeight: '40px',
+          transition: 'background-color 0.3s',
+          '&:hover': {
+            backgroundColor: theme?.palette?.action?.hover,
+          },
+        },
+        '& .MuiDataGrid-cell': {
+          fontSize: '13px',
+          padding: '4px 8px',
+          borderRight: '0.1px solid #e0e0e0',
+        },
+        '& .MuiDataGrid-row:nth-of-type(even)': {
+          backgroundColor: 'rgba(235, 235, 235, 0.2)',
+        },
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: 15,
             },
           },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[15]}
         checkboxSelection={false}
         hideFooterPagination
         disableRowSelectionOnClick
@@ -59,11 +95,9 @@ export default function CustomDataGridTable({ rows, columns }: DataGridDemoProps
         // headerHeight={42}
         sx={{
           '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: `#f3f3f3 +important!`,
-            color: '#333 !important',
-            minHeight: '40px !important',
-            maxHeight: '40px !important',
-            borderRight: '0.5px solid #fff !important',
+            backgroundColor: theme.palette.primary.light,
+            color: theme.palette.getContrastText(theme.palette.primary.light),
+            fontWeight: 'bold',
           },
 
           '& .MuiDataGrid-columnSeparator': {

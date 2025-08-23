@@ -6,49 +6,47 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Theme,
+  type Theme,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { setIsOpen } from '@/lib/store/features/customization/customizationSlice';
+import { type RootState } from '@/lib/store/store';
+import { type MenuItemType } from '@/lib/types';
+
 // import { MENU_OPEN, SET_MENU } from 'store/actions';
 
 // ==============================|| NAV ITEM ||============================== //
-
-interface MenuItemType {
-  id: string;
-  title: React.ReactNode;
-  caption?: React.ReactNode;
-  icon?: React.ComponentType<any>;
-  url?: string;
-  external?: boolean;
-  target?: string;
-  disabled?: boolean;
-  chip?: {
-    color?: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
-    variant?: 'filled' | 'outlined';
-    size?: 'small' | 'medium';
-    label: React.ReactNode;
-    avatar?: React.ReactNode;
-  };
-}
 
 interface NavItemProps {
   item: MenuItemType;
   level: number;
 }
 
+interface ComponentProps {
+  item: MenuItemType;
+  itemTarget?: string;
+}
+
+const Component = forwardRef<HTMLAnchorElement, ComponentProps & React.AnchorHTMLAttributes<HTMLAnchorElement>>(
+  ({ item, itemTarget, ...props }, ref) => <Link href={item.url} ref={ref} {...props} />
+);
+Component.displayName = 'Component';
+
 const NavItem: React.FC<NavItemProps> = ({ item, level }) => {
+  console.log('itemmmmm collaposeeee', item);
+  const openMenu = useSelector((state: RootState) => state.customization.openMenu);
   const theme: Theme = useTheme();
   const dispatch = useDispatch();
-  const customization = useSelector((state: any) => state.customization);
+  const customization = useSelector((state: RootState) => state.customization);
   const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
 
   const componentLink = (item: MenuItemType, target: string) =>
     forwardRef<HTMLAnchorElement, any>((props, ref) => (
-      <Link ref={ref} {...props} to={item.url!} target={target} href={item.url!} />
+      <Link ref={ref} {...props} to={item.url} target={target} href={item.url} />
     ));
 
   const Icon = item.icon;
@@ -65,8 +63,9 @@ const NavItem: React.FC<NavItemProps> = ({ item, level }) => {
   const itemTarget = item.target || '_self';
 
   const itemHandler = (id: string) => {
-    // dispatch({ type: MENU_OPEN, id });
-    // if (matchesSM) dispatch({ type: SET_MENU, opened: false });
+    console.log('idddd', id);
+    debugger;
+    dispatch(setIsOpen(id)); // dispatch action with new state
   };
 
   useEffect(() => {
@@ -76,7 +75,14 @@ const NavItem: React.FC<NavItemProps> = ({ item, level }) => {
 
   return (
     <ListItemButton
-      component={item.external ? 'a' : componentLink(item, itemTarget)}
+      component={
+        // item?.external
+        //   ?
+        'a'
+        // : forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>((props, ref) => (
+        //     <Link href={item.url!} ref={ref} {...props} />
+        //   ))
+      } // pass component type, NOT element
       disabled={item.disabled}
       sx={{
         borderRadius: `${customization.borderRadius}px`,
@@ -86,33 +92,46 @@ const NavItem: React.FC<NavItemProps> = ({ item, level }) => {
         py: level > 1 ? 1 : 1.25,
         pl: `${level * 24}px`,
       }}
-      selected={isOpen}
-      onClick={() => itemHandler(item.id)}
+      selected={customization.isOpen.findIndex((id) => id === item?.id) > -1}
+      onClick={() => { itemHandler(item?.id); }}
     >
-      <ListItemIcon sx={{ my: 'auto', minWidth: !item.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
+      <ListItemIcon
+        sx={{
+          my: 'auto',
+          minWidth: !item?.icon ? 18 : 36,
+        }}
+      >
+        {itemIcon}
+      </ListItemIcon>
       <ListItemText
         primary={
-          <Typography variant={isOpen ? 'h5' : 'h5'} fontWeight={isOpen ? 600 : 'inherit'} color="inherit">
-            {item.title}
+          <Typography
+            variant={customization.isOpen.findIndex((id) => id === item?.id) > -1 ? 'h5' : 'body1'}
+            fontWeight={customization.isOpen.findIndex((id) => id === item?.id) > -1 ? '600' : 'inherit'}
+            color="inherit"
+          >
+            {item?.title}
           </Typography>
         }
         secondary={
-          item.caption && (
-            <Typography sx={{}} display="block" gutterBottom>
-              {item.caption}
-            </Typography>
-          )
+          item?.caption ? <Typography
+              variant="caption"
+              // sx={{ ...theme.typography.subMenuCaption }}
+              sx={{ ...(theme.typography as any).subMenuCaption }}
+              display="block"
+              gutterBottom
+            >
+              {item?.caption}
+            </Typography> : null
         }
       />
-      {item.chip && (
-        <Chip
-          color={item.chip.color}
-          variant={item.chip.variant}
-          size={item.chip.size}
-          label={item.chip.label}
-          //   avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
-        />
-      )}
+      {item?.chip ? <Chip
+          color={item?.chip.color}
+          variant={item?.chip.variant}
+          size={item?.chip.size}
+          label={item?.chip.label}
+          // avatar={item?.chip.avatar && <Avatar>{item?.chip.avatar}</Avatar>}
+        /> : null}
     </ListItemButton>
   );
 };

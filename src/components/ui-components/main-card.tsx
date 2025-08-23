@@ -1,8 +1,8 @@
 'use client';
 
-import { forwardRef, ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
-import { SxProps, Theme, useTheme } from '@mui/material/styles';
+import { type SxProps, type Theme, useTheme } from '@mui/material/styles';
 
 const headerSX: SxProps<Theme> = {
   '& .MuiCardHeader-action': { mr: 0 },
@@ -55,13 +55,11 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
         }}
       >
         {/* card header and action */}
-        {!darkTitle && title && <CardHeader sx={headerSX} title={title} action={secondary} />}
-        {darkTitle && title && (
-          <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />
-        )}
+        {!darkTitle && title ? <CardHeader sx={headerSX} title={title} action={secondary} /> : null}
+        {darkTitle && title ? <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} /> : null}
 
         {/* content & header divider */}
-        {title && <Divider />}
+        {title ? <Divider /> : null}
 
         {/* card content */}
         {content ? (

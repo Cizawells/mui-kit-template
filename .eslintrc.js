@@ -4,6 +4,8 @@ const project = resolve(__dirname, 'tsconfig.json');
 
 module.exports = {
   root: true,
+    parser: '@typescript-eslint/parser', // <-- add this
+
   extends: [
     require.resolve('@vercel/style-guide/eslint/node'),
     require.resolve('@vercel/style-guide/eslint/typescript'),

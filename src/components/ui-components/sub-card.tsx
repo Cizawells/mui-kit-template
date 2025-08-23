@@ -1,8 +1,8 @@
 'use client';
 
-import { forwardRef, ReactNode } from 'react';
-import { Card, CardContent, CardHeader, SxProps, Typography } from '@mui/material';
-import { Theme, useTheme } from '@mui/material/styles';
+import { forwardRef, type ReactNode } from 'react';
+import { Card, CardContent, CardHeader, type SxProps, Typography } from '@mui/material';
+import { type Theme, useTheme } from '@mui/material/styles';
 
 interface SubCardProps {
   children?: ReactNode;
@@ -40,12 +40,8 @@ const SubCard = forwardRef<HTMLDivElement, SubCardProps>(
         {...others}
       >
         {/* card header and action */}
-        {!darkTitle && title && (
-          <CardHeader sx={{ p: 1 }} title={<Typography variant="h5">{title}</Typography>} action={secondary} />
-        )}
-        {darkTitle && title && (
-          <CardHeader sx={{ p: 1 }} title={<Typography variant="h4">{title}</Typography>} action={secondary} />
-        )}
+        {!darkTitle && title ? <CardHeader sx={{ p: 1 }} title={<Typography variant="h5">{title}</Typography>} action={secondary} /> : null}
+        {darkTitle && title ? <CardHeader sx={{ p: 1 }} title={<Typography variant="h4">{title}</Typography>} action={secondary} /> : null}
 
         {/* card content */}
         {content ? (

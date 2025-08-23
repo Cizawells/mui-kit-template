@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   IconArchive,
   IconBrandChrome,
@@ -24,17 +23,17 @@ import {
   IconWallet,
 } from '@tabler/icons-react';
 
-// Define types for menu items
-interface BaseMenuItem {
-  id: string;
-  title: ReactNode;
-  type: 'group' | 'collapse' | 'item';
-  children?: MenuItem[];
-  icon?: React.ComponentType<any>;
-  url?: string;
-}
+import { type MenuItemType } from '@/lib/types';
 
-type MenuItem = BaseMenuItem;
+// // Define types for menu items
+// interface BaseMenuItem {
+//   id: string;
+//   title: ReactNode;
+//   type: 'group' | 'collapse' | 'item';
+//   children?: MenuItem[];
+//   icon?: React.ComponentType<any>;
+//   url?: string;
+// }
 
 const icons = {
   IconBrandChrome,
@@ -61,21 +60,24 @@ const icons = {
   IconKey,
 };
 
-const parameter: MenuItem = {
+const parameter: MenuItemType = {
   id: 'parameter-settings',
   title: 'Parametres',
   type: 'group',
+  url: '/zones-geographiques/pays',
   children: [
     {
       id: 'global-settings',
       title: 'Globale',
       type: 'collapse',
+      url: '/zones-geographiques/pays',
       icon: icons.IconSettings,
       children: [
         {
           id: 'zones-geographiques',
           title: 'zones-geographiques',
           type: 'collapse',
+          url: '/zones-geographiques/pays',
           children: [
             {
               id: 'pays',
@@ -95,6 +97,7 @@ const parameter: MenuItem = {
           id: 'activites',
           title: 'activites',
           type: 'collapse',
+          url: '/zones-geographiques/pays',
           children: [
             {
               id: 'secteur-activites',

@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles'; // <-- use this
 import ButtonComponent from '@/components/ui-components/button-component';
 import ListSearchComponent from '@/components/ui-components/list-search-component';
 
-const Header = ({}) => {
+function Header({}) {
   const theme = useTheme();
   return (
     <Stack
@@ -28,7 +28,7 @@ const Header = ({}) => {
         />
 
         <ButtonComponent
-          text={'Search'}
+          text="Search"
           // handleClick={() => loadData()}
           size="small"
           variant="outlined"
@@ -45,7 +45,7 @@ const Header = ({}) => {
 
       <Stack direction={{ xs: 'column', sm: 'row' }} gap="0.4rem">
         <ButtonComponent
-          text={'Creer'}
+          text="Creer"
           // handleClick={() => handleClickOpenCreateOrEditDialog()}
           startIcon={<Add />}
           variant="contained"
@@ -54,6 +54,6 @@ const Header = ({}) => {
       </Stack>
     </Stack>
   );
-};
+}
 
 export default Header;

@@ -17,17 +17,15 @@ export interface SimpleDialogProps {
   onClose: (value: string) => void;
 }
 
-function SimpleDialog(props: SimpleDialogProps) {
+function SimpleDialog(props: SimpleDialogProps): React.JSX.Element {
   const theme = useTheme();
   const { onClose, selectedValue, open } = props;
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value: string) => {
-    onClose(value);
-  };
+ 
 
   return (
     <Dialog onClose={handleClose} open={open} fullWidth>
@@ -49,7 +47,9 @@ function SimpleDialog(props: SimpleDialogProps) {
           <CloseIcon />
         </IconButton>
       </Stack>
-      <DialogContent></DialogContent>
+      <DialogContent>
+        hello
+      </DialogContent>
       <DialogActions sx={{ mr: 2 }}>
         <Button
           variant="outlined"
@@ -82,15 +82,15 @@ function SimpleDialog(props: SimpleDialogProps) {
   );
 }
 
-export default function PayDialog() {
+export default function PayDialog(): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (): void => {
     setOpen(true);
   };
 
-  const handleClose = (value: string) => {
+  const handleClose = (value: string): void => {
     setOpen(false);
     setSelectedValue(value);
   };

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Close from '@mui/icons-material/Close';
-import { IconButton, InputAdornment, OutlinedInput, SxProps, Theme } from '@mui/material';
+import { IconButton, InputAdornment, OutlinedInput, type SxProps, type Theme } from '@mui/material';
 
 // import } from '@tabler/icons';
 
@@ -31,7 +31,7 @@ const ListSearchComponent: React.FC<ListSearchComponentProps> = ({
   return (
     <OutlinedInput
       id="input-search-list-style1"
-      placeholder={'Search'}
+      placeholder="Search"
       style={{ ...style }}
       data-testid="list-search"
       name="list-search"

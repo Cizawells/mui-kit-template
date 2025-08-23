@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Box, Drawer, Theme, useMediaQuery } from '@mui/material';
+import { Box, Drawer, type Theme, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 // third-party

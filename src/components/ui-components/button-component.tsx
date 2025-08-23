@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Button, { ButtonProps } from '@mui/material/Button';
+import Button, { type ButtonProps } from '@mui/material/Button';
 
 interface ButtonComponentProps extends Omit<ButtonProps, 'variant' | 'size' | 'onClick'> {
   text: string | React.ReactNode;
